@@ -1,5 +1,5 @@
-import { db } from "../db/index.js"
-import { buildRoutePath } from "../utils/build-route-path.js"
+import { db } from "../../db/index.js"
+import { buildRoutePath } from "../../utils/build-route-path.js"
 
 export const getTasks = {
   method: "GET",

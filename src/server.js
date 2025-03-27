@@ -1,12 +1,12 @@
 import htpp from "node:http"
 import { json } from "./middlewares/json.js"
-import { createTask } from "./routes/create-task.js"
-import { getTasks } from "./routes/get-tasks.js"
+import { createTask } from "./routes/tasks/create-task.js"
+import { getTasks } from "./routes/tasks/get-tasks.js"
 
 import { RouteHandler } from "./routes/index.js"
-import { updateTask } from "./routes/update-task.js"
-import { deleteTask } from "./routes/delete-task.js"
-import { completeTask } from "./routes/complete-task.js"
+import { updateTask } from "./routes/tasks/update-task.js"
+import { deleteTask } from "./routes/tasks/delete-task.js"
+import { completeTask } from "./routes/tasks/complete-task.js"
 import { TaskNotFoundError } from "./errors/task-not-found-error.js"
 
 const routes = new RouteHandler()
@@ -26,7 +26,6 @@ const server = htpp.createServer(async (req, res) => {
     let statusCode = 500
     let message = "Internal server error."
 
-    console.log(err)
     if (err instanceof TaskNotFoundError) {
       statusCode = 404
       message = err.message

@@ -1,6 +1,6 @@
-import { db } from "../db/index.js"
-import { TaskNotFoundError } from "../errors/task-not-found-error.js"
-import { buildRoutePath } from "../utils/build-route-path.js"
+import { db } from "../../db/index.js"
+import { TaskNotFoundError } from "../../errors/task-not-found-error.js"
+import { buildRoutePath } from "../../utils/build-route-path.js"
 
 export const completeTask = {
   method: "PATCH",
