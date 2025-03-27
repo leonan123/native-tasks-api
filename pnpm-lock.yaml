@@ -11,12 +11,20 @@ importers:
       csv-parse:
         specifier: ^5.6.0
         version: 5.6.0
+      zod:
+        specifier: ^3.24.2
+        version: 3.24.2
 
 packages:
 
   csv-parse@5.6.0:
     resolution: {integrity: sha512-l3nz3euub2QMg5ouu5U09Ew9Wf6/wQ8I++ch1loQ0ljmzhmfZYrH9fflS22i/PQEvsPvxCwxgz5q7UB8K1JO4Q==}
 
+  zod@3.24.2:
+    resolution: {integrity: sha512-lY7CDW43ECgW9u1TcT3IoXHflywfVqDYze4waEz812jR/bZ8FHDsl7pFQoSZTz5N+2NqRXs8GBwnAwo3ZNxqhQ==}
+
 snapshots:
 
   csv-parse@5.6.0: {}
+
+  zod@3.24.2: {}

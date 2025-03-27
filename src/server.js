@@ -8,6 +8,7 @@ import { updateTask } from "./routes/tasks/update-task.js"
 import { deleteTask } from "./routes/tasks/delete-task.js"
 import { completeTask } from "./routes/tasks/complete-task.js"
 import { TaskNotFoundError } from "./errors/task-not-found-error.js"
+import { ZodError } from "zod"
 
 const routes = new RouteHandler()
 
@@ -22,16 +23,27 @@ const server = htpp.createServer(async (req, res) => {
 
   try {
     return routes.exec(req, res)
-  } catch (err) {
+  } catch (error) {
     let statusCode = 500
     let message = "Internal server error."
 
-    if (err instanceof TaskNotFoundError) {
-      statusCode = 404
-      message = err.message
+    if (error instanceof ZodError) {
+      message = "Validation error"
+
+      return res.writeHead(400).end(
+        JSON.stringify({
+          message,
+          errors: error.flatten().fieldErrors
+        })
+      )
     }
 
-    console.error(err)
+    if (error instanceof TaskNotFoundError) {
+      statusCode = 404
+      message = error.message
+    }
+
+    console.error(error)
     res.writeHead(statusCode).end(JSON.stringify({ message }))
   }
 })
