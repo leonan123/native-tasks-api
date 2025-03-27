@@ -50,7 +50,25 @@ export class Database {
     return task
   }
 
-  select(table) {
+  selectAll(table) {
     return this.#database[table] ?? []
+  }
+
+  selectById(table, id) {
+    return this.#database[table].find((data) => data.id === id)
+  }
+
+  update(table, data) {
+    const dbDataIndex = this.#database[table].findIndex((d) => d.id === data.id)
+
+    if (dbDataIndex <= -1) {
+      return
+    }
+
+    this.#database[table][dbDataIndex] = {
+      ...this.#database[table][dbDataIndex],
+      ...data,
+      updated_at: new Date().toISOString()
+    }
   }
 }

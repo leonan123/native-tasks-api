@@ -1,8 +1,9 @@
 import { db } from "../db/index.js"
+import { buildRoutePath } from "../utils/build-route-path.js"
 
 export const createTask = {
   method: "POST",
-  url: "/tasks",
+  url: buildRoutePath("/tasks"),
   handler: (req, res) => {
     const data = req.body
 

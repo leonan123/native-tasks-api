@@ -1,10 +1,11 @@
 import { db } from "../db/index.js"
+import { buildRoutePath } from "../utils/build-route-path.js"
 
 export const getTasks = {
   method: "GET",
-  url: "/tasks",
-  handler: (req, res) => {
-    const tasks = db.select("tasks")
+  url: buildRoutePath("/tasks"),
+  handler: (_, res) => {
+    const tasks = db.selectAll("tasks")
     return res.end(JSON.stringify(tasks))
   }
 }
