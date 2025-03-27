@@ -7,6 +7,7 @@ import { RouteHandler } from "./routes/index.js"
 import { updateTask } from "./routes/update-task.js"
 import { deleteTask } from "./routes/delete-task.js"
 import { completeTask } from "./routes/complete-task.js"
+import { TaskNotFoundError } from "./errors/task-not-found-error.js"
 
 const routes = new RouteHandler()
 
@@ -22,8 +23,17 @@ const server = htpp.createServer(async (req, res) => {
   try {
     return routes.exec(req, res)
   } catch (err) {
+    let statusCode = 500
+    let message = "Internal server error."
+
+    console.log(err)
+    if (err instanceof TaskNotFoundError) {
+      statusCode = 404
+      message = err.message
+    }
+
     console.error(err)
-    res.writeHead(500).end()
+    res.writeHead(statusCode).end(JSON.stringify({ message }))
   }
 })
 

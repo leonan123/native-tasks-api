@@ -1,20 +1,17 @@
 import { db } from "../db/index.js"
+import { TaskNotFoundError } from "../errors/task-not-found-error.js"
 import { buildRoutePath } from "../utils/build-route-path.js"
 
 export const completeTask = {
   method: "PATCH",
-  url: buildRoutePath("/tasks/:id/complete"),
+  path: buildRoutePath("/tasks/:id/complete"),
   handler: (req, res) => {
     const { id } = req.params
 
-    const task = db.selectById("tasks", id)
+    const task = db.select("tasks", { id })
 
     if (!task) {
-      return res.writeHead(404).end(
-        JSON.stringify({
-          message: "task not found."
-        })
-      )
+      throw new TaskNotFoundError()
     }
 
     db.update("tasks", {

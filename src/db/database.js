@@ -50,37 +50,42 @@ export class Database {
     return task
   }
 
-  selectAll(table) {
+  select(table, search) {
+    if (search) {
+      return this.#database[table].filter((row) =>
+        Object.entries(search).some(([key, value]) =>
+          row[key].toLowerCase().includes(value.toLowerCase())
+        )
+      )
+    }
+
     return this.#database[table] ?? []
   }
 
-  selectById(table, id) {
-    return this.#database[table].find((data) => data.id === id)
-  }
+  update(table, updatedData) {
+    const rowIndex = this.#database[table].findIndex(
+      (row) => row.id === updatedData.id
+    )
 
-  update(table, data) {
-    const dbDataIndex = this.#database[table].findIndex((d) => d.id === data.id)
+    if (rowIndex >= 0) {
+      const row = this.#database[table][rowIndex]
 
-    if (dbDataIndex <= -1) {
-      return
-    }
+      this.#database[table][rowIndex] = {
+        ...row,
+        ...updatedData,
+        updated_at: new Date().toISOString()
+      }
 
-    this.#database[table][dbDataIndex] = {
-      ...this.#database[table][dbDataIndex],
-      ...data,
-      updated_at: new Date().toISOString()
+      this.#persist()
     }
   }
 
   delete(table, id) {
-    const dbDataIndex = this.#database[table].findIndex(
-      (data) => data.id === id
-    )
+    const rowIndex = this.#database[table].findIndex((data) => data.id === id)
 
-    if (dbDataIndex <= -1) {
-      return
+    if (rowIndex >= 0) {
+      this.#database[table].splice(rowIndex, 1)
+      this.#persist()
     }
-
-    this.#database[table].splice(dbDataIndex, 1)
   }
 }

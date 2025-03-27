@@ -1,3 +1,5 @@
+import { extractQueryParams } from "../utils/extract-query-params.js"
+
 export class RouteHandler {
   #routes = []
 
@@ -7,9 +9,12 @@ export class RouteHandler {
     const route = this.#getRouteByMethodAndUrl(method, url)
 
     if (route) {
-      const routeParams = req.url.match(route.url)
+      const routeParams = req.url.match(route.path)
 
-      req.params = { ...routeParams.groups }
+      const { query, ...params } = routeParams.groups
+
+      req.params = params
+      req.query = extractQueryParams(query)
 
       return route.handler(req, res)
     }
@@ -20,7 +25,7 @@ export class RouteHandler {
   #getRouteByMethodAndUrl(method, url) {
     return this.#routes.find((_route) => {
       const isSameMethod = _route.method === method
-      const isSameUrl = _route.url.test(url)
+      const isSameUrl = _route.path.test(url)
 
       if (isSameMethod && isSameUrl) {
         return true

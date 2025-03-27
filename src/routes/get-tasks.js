@@ -3,9 +3,18 @@ import { buildRoutePath } from "../utils/build-route-path.js"
 
 export const getTasks = {
   method: "GET",
-  url: buildRoutePath("/tasks"),
-  handler: (_, res) => {
-    const tasks = db.selectAll("tasks")
+  path: buildRoutePath("/tasks"),
+  handler: (req, res) => {
+    const { search } = req.query
+
+    const tasks = db.select(
+      "tasks",
+      search && {
+        title: search,
+        description: search
+      }
+    )
+
     return res.end(JSON.stringify(tasks))
   }
 }

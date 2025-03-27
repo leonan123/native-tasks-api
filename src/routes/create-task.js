@@ -3,7 +3,7 @@ import { buildRoutePath } from "../utils/build-route-path.js"
 
 export const createTask = {
   method: "POST",
-  url: buildRoutePath("/tasks"),
+  path: buildRoutePath("/tasks"),
   handler: (req, res) => {
     const data = req.body
 
