@@ -5,12 +5,14 @@ import { getTasks } from "./routes/get-tasks.js"
 
 import { RouteHandler } from "./routes/index.js"
 import { updateTask } from "./routes/update-task.js"
+import { deleteTask } from "./routes/delete-task.js"
 
 const routes = new RouteHandler()
 
 routes.register(createTask)
 routes.register(getTasks)
 routes.register(updateTask)
+routes.register(deleteTask)
 
 const server = htpp.createServer(async (req, res) => {
   await json(req, res)
@@ -18,7 +20,7 @@ const server = htpp.createServer(async (req, res) => {
   try {
     return routes.exec(req, res)
   } catch (err) {
-    console.err(err)
+    console.error(err)
     res.writeHead(500).end()
   }
 })

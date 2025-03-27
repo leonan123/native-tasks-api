@@ -71,4 +71,16 @@ export class Database {
       updated_at: new Date().toISOString()
     }
   }
+
+  delete(table, id) {
+    const dbDataIndex = this.#database[table].findIndex(
+      (data) => data.id === id
+    )
+
+    if (dbDataIndex <= -1) {
+      return
+    }
+
+    this.#database[table].splice(dbDataIndex, 1)
+  }
 }
