@@ -1,5 +1,6 @@
 import { db } from "../../db/index.js"
 import { TaskNotFoundError } from "../../errors/task-not-found-error.js"
+import { updateTaskSchema } from "../../schemas/index.js"
 import { buildRoutePath } from "../../utils/build-route-path.js"
 
 export const updateTask = {
@@ -7,9 +8,9 @@ export const updateTask = {
   path: buildRoutePath("/tasks/:id"),
   handler: (req, res) => {
     const { id } = req.params
-    const data = req.body
+    const data = updateTaskSchema.parse(req.body)
 
-    const task = db.select("tasks", { id })
+    const [task] = db.select("tasks", { id })
 
     if (!task) {
       throw new TaskNotFoundError()

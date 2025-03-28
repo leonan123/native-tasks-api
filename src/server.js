@@ -33,7 +33,10 @@ const server = htpp.createServer(async (req, res) => {
       return res.writeHead(400).end(
         JSON.stringify({
           message,
-          errors: error.flatten().fieldErrors
+          errors: {
+            ...error.flatten().fieldErrors,
+            form: error.flatten().formErrors[0]
+          }
         })
       )
     }
